@@ -1,6 +1,8 @@
 canvas {
 	border: 3px solid black;
 	margin-left: 510px;
+	margin-top: -180px;
+	position: absolute;
 }
 
 h1 {
@@ -8,5 +10,19 @@ h1 {
 	font-style: Impact;
 	color: black;
 	text-align: center;
-	margin-top: 5px;
+	margin-top: -5px;
+}
+
+#score {
+	font-size: 40px;
+	margin-top: 70px;
+	margin-left: 100px;
+	font-style: Impact;
+}
+
+#level {
+	margin-top: -25px;
+	font-size: 40px;
+	margin-left: 100px;
+	font-style: Impact;
 }

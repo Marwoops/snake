@@ -18,6 +18,12 @@ var fruits = [];
 var direction;
 var c = document.getElementById('canvas');
 var ctx = c.getContext("2d");
+var score = 0;
+var level = 0;
+var scoreElem = document.getElementById("score");
+var levelElem = document.getElementById("level");
+var valided;
+var speed = 500;
 
 Snake = class {
 	constructor() {
@@ -62,6 +68,14 @@ Snake = class {
 					ctx.stroke();
 					snake.queue.push([x + 1, y]);
 					break;
+			}
+
+			score += 10
+			scoreElem.innerHTML = `Score : ${score}`;
+			if ((score % 50) === 0) {
+				level += 1;
+				speed -= 100;
+				levelElem.innerHTML = `Level : ${level}`;
 			}
 		};
 		this.move = function (dir) {
@@ -110,7 +124,18 @@ Snake = class {
 				ctx.stroke();
 				snake.queue.pop();
 		};
-
+		this.eatHisSelf = function () {
+			valided = false;
+			for (let i = 1; i < snake.queue.length; i++) {
+				if (snake.queue[0][0] == snake.queue[i][0] && snake.queue[0][1] == snake.queue[i][1]) {
+					valided = true;
+					console.log("valided");
+				} else {
+					valided = false;
+				}
+			} 
+			return valided;
+		}
 	}
 
 }
@@ -193,21 +218,22 @@ setInterval(function() {
 }, 3000);
 
 setInterval(function() {
-	if (lost === false && started == true) {
+	if (lost === false && started === true && snake.eatHisSelf() === false) {
 		ctx.beginPath();
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(0, 0, 800, 800);
 		reprint();
 		snake.move(direction);
 	}
-	if (borderCollision(direction) === false) {
+
+	if (borderCollision(direction) === false && snake.eatHisSelf() === false) {
 		if (setup[snake.queue[0][0]][snake.queue[0][1]] === 1) {
 			fruit--;
 			setup[snake.queue[0][0]][snake.queue[0][1]] = 10;
 			snake.grow(direction);
 		} 
-	} else if (borderCollision(direction) === true) {
+	} else if (borderCollision(direction) === true || snake.eatHisSelf() === true) {
 			lost = true;
 			alert("You loose. Press F5 then \"OK\" to retart the game.");
 		}
-}, 500);
+}, speed);
