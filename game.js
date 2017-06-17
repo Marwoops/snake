@@ -176,7 +176,11 @@ snake.generateHead()
 
 window.addEventListener('keydown', e => {
 	if (e.key === "ArrowUp"  || e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "ArrowLeft") {
-		direction = e.key;
+		if (((e.key === "ArrowUp" && direction === "ArrowDown") || (e.key === "ArrowDown" && direction === "ArrowUp")) || ((e.key === "ArrowLeft" && direction === "ArrowRight") || (e.key === "ArrowRight" && direction === "ArrowLeft"))) {
+			direction = direction;
+		} else {
+			direction = e.key;
+		}
 		started = true;
 	}
 });
