@@ -1,4 +1,4 @@
-// creating the grid: it's a 25 * 25 array
+// creating a grid: a 25 * 25 array
 const setup = [];
 
 for (let i = 0; i < 25; i++) {
@@ -36,16 +36,17 @@ var speed = 500;
 Snake = class {
 	constructor() {
 
-		this.queue = []; // An array that contains [x position][y position] of any part of the snake
+		this.queue = []; /* An array that contains [x] [y] of any of the snake's boxes
+							x and y are int which equal to the snakes's position on the grid */
 
-		this.generateHead = function() {   // Generating the head of the snake
+		this.generateHead = function() {   // Generating the head on the [16][12]
 			ctx.beginPath();
 			ctx.fillStyle = "#4697f2";
 			ctx.fillRect(512, 384, 32, 32);
 			snake.queue.push([512 / 32, 384 / 32]);
 		};
 
-		this.grow = function (dir) {   // Add a new case to the snake when he eats a fruit
+		this.grow = function (dir) {   // Add a new box to the snake when he eats a fruit
 			ctx.beginPath();
 			ctx.fillStyle="#4697f2";
 
@@ -88,7 +89,7 @@ Snake = class {
 				levelElem.innerHTML = `Level : ${level}`;
 			}
 		};
-		this.move = function (dir) {   // The last case of the snake becomes the "head"
+		this.move = function (dir) {   // The last boxe of the snake becomes the "head"
 			ctx.beginPath();
 			ctx.fillStyle="#4697f2";
 
@@ -150,7 +151,7 @@ Snake = class {
 
 }
  
-var snake = new Snake;  // Generating the object
+var snake = new Snake;  // Generating the snake-object
 
 function generateFruit() {   // Generating fruits at a random place
 	x = 32 * Math.floor(Math.random() * 25);
@@ -180,7 +181,7 @@ function reprint () {   // A function used to refresh the canvas
 	}
 }
 
-function borderCollision (dir) {   // Check if the snake isn't out of the grid
+function borderCollision (dir) {   // Check if the snake is not out of the grid
     switch (dir) {
         case ("ArrowUp"):
             if (setup[snake.queue[0][0]][snake.queue[0][1]] === undefined) {
