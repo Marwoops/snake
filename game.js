@@ -1,3 +1,4 @@
+// creating the grid: it's a 25 * 25 array
 const setup = [];
 
 for (let i = 0; i < 25; i++) {
@@ -10,32 +11,41 @@ for (let i = 0; i < 25; i++) {
 
 var x;
 var y;
-var fruit = 0;
+
 var lost = false;
 var started = false;
+
 var fruit = 0;
 var fruits = [];
+
 var direction;
+
 var c = document.getElementById('canvas');
 var ctx = c.getContext("2d");
+
 var score = 0;
 var level = 0;
+
 var scoreElem = document.getElementById("score");
 var levelElem = document.getElementById("level");
+
 var valided;
 var speed = 500;
+
 
 Snake = class {
 	constructor() {
 
-		this.queue = [];
-		this.generateHead = function() {
+		this.queue = []; // An array that contains [x position][y position] of any part of the snake
+
+		this.generateHead = function() {   // Generating the head of the snake
 			ctx.beginPath();
 			ctx.fillStyle = "#4697f2";
 			ctx.fillRect(512, 384, 32, 32);
 			snake.queue.push([512 / 32, 384 / 32]);
 		};
-		this.grow = function (dir) {
+
+		this.grow = function (dir) {   // Add a new case to the snake when he eats a fruit
 			ctx.beginPath();
 			ctx.fillStyle="#4697f2";
 
@@ -70,15 +80,15 @@ Snake = class {
 					break;
 			}
 
-			score += 10
+			score += 10   // Add 10 points when it eats a fruit
 			scoreElem.innerHTML = `Score : ${score}`;
-			if ((score % 50) === 0) {
+			if ((score % 50) === 0) {   // Refreshs frenquences are shorter (-1s) when you have 10 points 
 				level += 1;
 				speed -= 100;
 				levelElem.innerHTML = `Level : ${level}`;
 			}
 		};
-		this.move = function (dir) {
+		this.move = function (dir) {   // The last case of the snake becomes the "head"
 			ctx.beginPath();
 			ctx.fillStyle="#4697f2";
 
@@ -124,7 +134,7 @@ Snake = class {
 				ctx.stroke();
 				snake.queue.pop();
 		};
-		this.eatHisSelf = function () {
+		this.eatHisSelf = function () {   // Check if the head is at the same position of any other part
 			valided = false;
 			for (let i = 1; i < snake.queue.length; i++) {
 				if (snake.queue[0][0] == snake.queue[i][0] && snake.queue[0][1] == snake.queue[i][1]) {
@@ -139,10 +149,10 @@ Snake = class {
 	}
 
 }
+ 
+var snake = new Snake;  // Generating the object
 
-var snake = new Snake;
-
-function generateFruit() {
+function generateFruit() {   // Generating fruits at a random place
 	x = 32 * Math.floor(Math.random() * 25);
 	y = 32 * Math.floor(Math.random() * 25);
 
@@ -154,7 +164,7 @@ function generateFruit() {
 	fruits[1] = y;
 }
 
-function reprint () {
+function reprint () {   // A function used to refresh the canvas
 	if (fruit === 1) {
 		ctx.beginPath();
 		ctx.fillStyle = "#FF0000";
@@ -170,7 +180,7 @@ function reprint () {
 	}
 }
 
-function borderCollision (dir) {
+function borderCollision (dir) {   // Check if the snake isn't out of the grid
     switch (dir) {
         case ("ArrowUp"):
             if (setup[snake.queue[0][0]][snake.queue[0][1]] === undefined) {
@@ -197,9 +207,9 @@ function borderCollision (dir) {
                 return false;
             }
 }}
-snake.generateHead()
+snake.generateHead();
 
-window.addEventListener('keydown', e => {
+window.addEventListener('keydown', e => {   // Setting up the direction of the snake by taking a key as an input
 	if (e.key === "ArrowUp"  || e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "ArrowLeft") {
 		if (((e.key === "ArrowUp" && direction === "ArrowDown") || (e.key === "ArrowDown" && direction === "ArrowUp")) || ((e.key === "ArrowLeft" && direction === "ArrowRight") || (e.key === "ArrowRight" && direction === "ArrowLeft"))) {
 			direction = direction;
@@ -210,7 +220,7 @@ window.addEventListener('keydown', e => {
 	}
 });
 
-setInterval(function() {
+setInterval(function() {   // Generate a fruit 3s after the last one was eaten
 	if (lost === false && fruit === 0 && started === true) {
 		generateFruit();
 		fruit++;
