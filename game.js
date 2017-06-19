@@ -228,7 +228,7 @@ setInterval(function() {   // Generate a fruit 3s after the last one was eaten
 	}
 }, 3000);
 
-setInterval(function() {
+const loop = setInterval(function() {
 	if (lost === false && started === true && snake.eatHisSelf() === false) {
 		ctx.beginPath();
 		ctx.fillStyle = "#FFFFFF";
@@ -244,6 +244,7 @@ setInterval(function() {
 			snake.grow(direction);
 		} 
 	} else if (borderCollision(direction) === true || snake.eatHisSelf() === true) {
+			clearInterval(loop);
 			lost = true;
 			alert("You loose. Press F5 then \"OK\" to retart the game.");
 		}
